@@ -1,0 +1,38 @@
+package com.example.ilja.jni;
+
+/**
+ * Created by ilja on 25.03.16.
+ *
+ */
+public class VideoKit {
+    static {
+        System.loadLibrary("videokit");
+    }
+
+    private static VideoKit _instance = null;
+
+    public static VideoKit getInstance() {
+        if (_instance == null) {
+            _instance = new VideoKit();
+        }
+
+        return _instance;
+    }
+
+    private VideoKit() {}
+
+    /**
+     * Call FFmpeg with specified arguments
+     * @param args FFmpeg arguments
+     * @return true if success, false otherwise
+     */
+    public boolean process(String[] args) {
+        String[] params = new String[args.length + 1];
+        params[0] = "ffmpeg";
+        System.arraycopy(args, 0, params, 1, args.length);
+
+        return run(params);
+    }
+
+    private native boolean run(String[] args);
+}
